@@ -94,6 +94,15 @@ def get_location_info():
         print(f"Error: {e}")
         return None, None
 
+def check_date():
+    isOld = False
+    with open('currentDate.txt', 'r') as f:
+        date = str(datetime.now().date())
+        cur = f.read()
+        if cur != date:
+            isOld = True
+        
+    return isOld
 
 if not path.isfile('currentDate.txt'):
     open('currentDate.txt', 'x').close()
@@ -101,13 +110,13 @@ if not path.isfile('currentDate.txt'):
 if not path.isfile('prayTimes.txt'):
     open('prayTimes.txt', 'x').close()
 
-with open('currentDate.txt', 'r+') as f:
-    date = str(datetime.now().date())
-    cur = f.read()
-    if cur != date:
+
+if check_date():
+    with open('currentDate.txt', 'w') as f:
+        date = str(datetime.now().date())
         f.write(date)
         writeData('prayTimes.txt')
-          
+
 
 prayTimes = None
 
