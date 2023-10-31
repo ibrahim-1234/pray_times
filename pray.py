@@ -31,6 +31,7 @@ def getData(locationInfo):
         if i not in filterTimes:
             filteredPrayTimes[i] = [v]
 
+    # adding igamh time
     filteredPrayTimes['Fajr'].append(25)
     filteredPrayTimes['Sunrise'].append(0)              
     filteredPrayTimes['Dhuhr'].append(20)   
@@ -41,8 +42,8 @@ def getData(locationInfo):
     return filteredPrayTimes
 
 
-def findDelta(P_I_time, currentTime):
-    prayTime = datetime.strptime(P_I_time[0] + ':00', '%H:%M:%S')
+def findDelta(pray_igamh_times, currentTime):
+    prayTime = datetime.strptime(pray_igamh_times[0] + ':00', '%H:%M:%S')
 
     prayTime = timedelta(hours=prayTime.hour,
                     minutes=prayTime.minute,
@@ -56,7 +57,7 @@ def findDelta(P_I_time, currentTime):
 
     if currentTime >= prayTime:
         timePassed = currentTime - prayTime
-        igamh = timedelta(minutes=P_I_time[1])
+        igamh = timedelta(minutes=pray_igamh_times[1])
 
         if currentTime >= prayTime + igamh:
             return f'{timePassed} - passed'
@@ -73,8 +74,8 @@ def displayTimes(data):
         currentTime = datetime.now().time()
         print(location)
 
-        for prayName, P_I_time in data.items():
-            print(f'{prayName}\t{findDelta(P_I_time, currentTime)}')
+        for prayName, pray_igamh_times in data.items():
+            print(f'{prayName}\t{findDelta(pray_igamh_times, currentTime)}')
 
         sleep(1)
         system('cls' if name=='nt' else 'clear')  
